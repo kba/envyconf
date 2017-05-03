@@ -46,36 +46,34 @@ function envyConf(PREFIX, localDefaults={}) {
 }
 
 function envyLog(PREFIX, category='') {
-    return function getLogger() {
-        const config = envyConf(PREFIX, {
-            LOGLEVEL: '',
-        })
-        const format = function format(level, message) {
-            // console.log(message)
-            if (typeof message !== 'string') message = JSON.stringify(message)
-            const timestamp = new Date().toISOString().substr(11).substr(0, 11)
-            return `# ${level} [${timestamp}] ${category} - ${message}`
-        }
-        const logEnabled = function logEnabled(level, cb) {
-            if (level.match(/debug/i) && config.LOGLEVEL.match(/(silly|debug)/i)) return cb()
-            if (level.match(/SILLY/i) && config.LOGLEVEL.match(/silly/i)) return cb()
-        }
-        if (isNode && config.LOGFILE) {
-            // HACK XXX webpack
-            const fs = require('fs')
-            return {
-                silly: (...msgs) => logEnabled('silly', () => msgs.forEach(msg =>
-                    fs.appendFile(config.LOGFILE, format('SILLY', msg+'\n'), ()=>{}))),
-                debug: (...msgs) => logEnabled('debug', () => msgs.forEach(msg =>
-                    fs.appendFile(config.LOGFILE, format('DEBUG', msg+'\n'), ()=>{}))),
-            }
-        }
+    const config = envyConf(PREFIX, {
+        LOGLEVEL: '',
+    })
+    const format = function format(level, message) {
+        // console.log(message)
+        if (typeof message !== 'string') message = JSON.stringify(message)
+        const timestamp = new Date().toISOString().substr(11).substr(0, 11)
+        return `# ${level} [${timestamp}] ${category} - ${message}`
+    }
+    const logEnabled = function logEnabled(level, cb) {
+        if (level.match(/debug/i) && config.LOGLEVEL.match(/(silly|debug)/i)) return cb()
+        if (level.match(/SILLY/i) && config.LOGLEVEL.match(/silly/i)) return cb()
+    }
+    if (isNode && config.LOGFILE) {
+        // HACK XXX webpack
+        const fs = require('fs')
         return {
-            silly: (...msgs) => logEnabled('SILLY', () => msgs.forEach(msg =>
-                console[isNode ? 'log' : 'debug'](format('SILLY', msg)))),
-            debug: (...msgs) => logEnabled('DEBUG', () => msgs.forEach(msg =>
-                console.log(format('DEBUG', msg)))),
+            silly: (...msgs) => logEnabled('silly', () => msgs.forEach(msg =>
+                fs.appendFile(config.LOGFILE, format('SILLY', msg+'\n'), ()=>{}))),
+            debug: (...msgs) => logEnabled('debug', () => msgs.forEach(msg =>
+                fs.appendFile(config.LOGFILE, format('DEBUG', msg+'\n'), ()=>{}))),
         }
+    }
+    return {
+        silly: (...msgs) => logEnabled('SILLY', () => msgs.forEach(msg =>
+            console[isNode ? 'log' : 'debug'](format('SILLY', msg)))),
+        debug: (...msgs) => logEnabled('DEBUG', () => msgs.forEach(msg =>
+            console.log(format('DEBUG', msg)))),
     }
 }
 
