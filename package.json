@@ -1,0 +1,17 @@
+{
+  "name": "envyconf",
+  "version": "0.0.1",
+  "description": "Environment variable zero-config configuration in Node.js and Browser",
+  "main": "envyconf.js",
+  "scripts": {
+    "test": "tap *.test.js"
+  },
+  "repository": "github:kba/envyconf",
+  "bugs": "https://github.com/kba/envyconf/issues",
+  "homepage": "https://github.com/kba/envyconf",
+  "author": "kba",
+  "license": "MIT",
+  "devDependencies": {
+    "tap": "^10.3.2"
+  }
+}
