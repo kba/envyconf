@@ -8,12 +8,21 @@ try {
     isNode = true
 }
 
+function _determinePrefix(PREFIX) {
+    if (!PREFIX) {
+        if (ENV.ENVYCONF_PREFIX) {
+            PREFIX = ENV.ENVYCONF_PREFIX
+        } else {
+            throw new Error("Need to set prefix")
+        }
+    }
+    if (!ENV.ENVYCONF_PREFIX) ENV.ENVYCONF_PREFIX = PREFIX
+    return PREFIX
+}
+
 function envyConf(PREFIX, localDefaults={}) {
     if (typeof PREFIX === 'object') [localDefaults, PREFIX] = [PREFIX, null]
-    if (!PREFIX) {
-        if (ENV.ENVYCONF_PREFIX) PREFIX = ENV.ENVYCONF_PREFIX
-        else throw new Error("Need to set prefix")
-    }
+    PREFIX = _determinePrefix(PREFIX)
     const PREFIX_RE = new RegExp(`^${PREFIX}_`)
     const DEFAULTS = {
         DEBUG: 'false',

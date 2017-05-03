@@ -4,12 +4,15 @@ const {envyConf, envyLog} = require('./envyconf')
 
 tap.test('loadConfig', t => {
     var PREFIX = 'ANNO'
+
+    t.equals(process.env.ENVYCONF_PREFIX, undefined, 'No ENVYCONF_PREFIX yet')
     var config = envyConf(PREFIX)
+    t.equals(process.env.ENVYCONF_PREFIX, PREFIX, 'first load set ENVYCONF_PREFIX envvar')
 
     const expected = 'not secret'
-    process.env.ANNO_JWT_SECRET = expected
+    process.env.ANNO_XYZ = expected
     config = envyConf(PREFIX)
-    t.equals(config.JWT_SECRET, expected, 'reloading from env works')
+    t.equals(config.XYZ, expected, 'reloading from env works')
 
     process.env.ANNO_FOO = expected
     config = envyConf(PREFIX)
