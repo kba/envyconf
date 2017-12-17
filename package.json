@@ -4,7 +4,9 @@
   "description": "Environment variable zero-config configuration in Node.js and Browser",
   "main": "envyconf.js",
   "scripts": {
-    "test": "tap *.test.js"
+    "test": "tap *.test.js",
+    "webpack": "webpack",
+    "prepublish": "npm run webpack"
   },
   "repository": "github:kba/envyconf",
   "bugs": "https://github.com/kba/envyconf/issues",

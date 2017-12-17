@@ -1,12 +1,13 @@
 const tap = require('tap')
 
-const {envyConf, envyLog} = require('./envyconf')
+const {envyConf} = require('./envyconf')
 
 tap.test('loadConfig', t => {
-    var PREFIX = 'ANNO'
+    let PREFIX = 'ANNO'
+    t.equals(envyConf, require('./envyconf'), 'export')
 
     t.equals(process.env.ENVYCONF_PREFIX, undefined, 'No ENVYCONF_PREFIX yet')
-    var config = envyConf(PREFIX)
+    let config = envyConf(PREFIX)
     t.equals(process.env.ENVYCONF_PREFIX, PREFIX, 'first load set ENVYCONF_PREFIX envvar')
 
     const expected = 'not secret'

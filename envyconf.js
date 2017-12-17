@@ -1,5 +1,5 @@
-var isNode
-var ENV
+let isNode
+let ENV
 try {
     ENV = window
     isNode = false
@@ -77,8 +77,6 @@ function envyLog(PREFIX, category='') {
     }
 }
 
+Object.assign(envyConf, {envyLog, envyConf})
 
-module.exports = {
-    envyConf,
-    envyLog,
-}
+module.exports = envyConf
