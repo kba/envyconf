@@ -1,6 +1,6 @@
 {
   "name": "envyconf",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Environment variable zero-config configuration in Node.js and Browser",
   "main": "envyconf.js",
   "scripts": {
